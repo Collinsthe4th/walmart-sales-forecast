@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environment / secrets
+.env
+
+# Trained models are rebuilt by scripts/run_pipeline.py
+models/
+*.joblib
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
