@@ -1,0 +1,22 @@
+{
+  "validation_period": {
+    "start": "2012-02-03",
+    "end": "2012-10-26",
+    "weeks": 39,
+    "rows": 115588
+  },
+  "train_rows": 305982,
+  "wmae": {
+    "Seasonal naive (same week last year)": 1800.26,
+    "Store-department mean": 2628.04,
+    "Gradient boosting (HistGBR)": 1591.93
+  },
+  "best_model": "Gradient boosting (HistGBR)",
+  "improvement_over_seasonal_naive_pct": 11.6,
+  "runtime_seconds": 33.9,
+  "gbr_mae_by_store_type": {
+    "A": 1888.98,
+    "B": 1424.87,
+    "C": 779.71
+  }
+}
