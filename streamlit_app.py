@@ -15,7 +15,10 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parent
 RESULTS = ROOT / "results"
 
-st.set_page_config(page_title="Walmart Sales Forecast", page_icon="📈", layout="wide")
+st.set_page_config(page_title="Walmart Weekly Sales Forecast", layout="wide")
+
+HEADER = "https://images.unsplash.com/photo-1591696205602-2f950c417cb9?auto=format&fit=crop&w=1600&h=340&q=80"
+st.image(HEADER, use_container_width=True)
 
 
 @st.cache_data
@@ -32,11 +35,12 @@ def wmae(actual: pd.Series, pred: pd.Series, holiday: pd.Series) -> float:
 
 df, metrics = load_results()
 
-st.title("📈 Walmart Weekly Sales Forecast")
+st.title("Walmart Weekly Sales Forecast")
 st.caption(
-    "Hold-out results for 3,331 store and department pairs across 45 stores "
-    f"({metrics['validation_period']['start']} to {metrics['validation_period']['end']}). "
-    "WMAE counts holiday weeks five times."
+    "I trained a gradient boosting model to forecast weekly sales for 3,331 store and department pairs "
+    "across 45 Walmart stores. The results below come from the 39 weeks I held out "
+    f"({metrics['validation_period']['start']} to {metrics['validation_period']['end']}), scored with WMAE "
+    "(weighted mean absolute error, where holiday weeks count five times)."
 )
 
 c1, c2, c3 = st.columns(3)
@@ -50,7 +54,7 @@ total = df.groupby("Date")[["Weekly_Sales", "seasonal_naive", "gradient_boosting
 total.columns = ["Actual", "Seasonal naive", "Gradient boosting"]
 st.line_chart(total, y_label="Total weekly sales (USD millions)")
 
-st.subheader("Explore one store and department")
+st.subheader("One store and department")
 left, right = st.columns([1, 3])
 with left:
     store = st.selectbox("Store", sorted(df["Store"].unique()), index=0)
@@ -65,11 +69,11 @@ with right:
     chart.columns = ["Actual", "Seasonal naive", "Gradient boosting"]
     st.line_chart(chart, y_label="Weekly sales (USD)")
 
-st.subheader("Where the model struggles")
+st.subheader("Error by store type")
 by_type = pd.Series(metrics["gbr_mae_by_store_type"], name="Mean absolute error (USD)")
 st.bar_chart(by_type)
 st.markdown(
     "Every model misses the spike in early April 2012. That week is Easter, which fell on 24 April in 2011 "
     "but on 8 April in 2012, so last year's sales point at the wrong week. "
-    "[Source code and README](https://github.com/Collinsthe4th/walmart-sales-forecast)"
+    "[Source code and README](https://github.com/Collinsthe4th/walmart-sales-forecast) · Header photo from Unsplash."
 )
